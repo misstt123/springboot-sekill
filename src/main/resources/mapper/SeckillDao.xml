@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goddong.mapper.SeckillDao">
+
+    <resultMap type="com.goddong.entity.Seckill" id="SeckillMap">
+        <result property="seckillId" column="seckill_id" jdbcType="INTEGER"/>
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+        <result property="image" column="image" jdbcType="VARCHAR"/>
+        <result property="price" column="price" jdbcType="NUMERIC"/>
+        <result property="costPrice" column="cost_price" jdbcType="NUMERIC"/>
+        <result property="stockCount" column="stock_count" jdbcType="INTEGER"/>
+        <result property="startTime" column="start_time" jdbcType="TIMESTAMP"/>
+        <result property="endTime" column="end_time" jdbcType="TIMESTAMP"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="SeckillMap">
+        select
+          seckill_id, title, image, price, cost_price, stock_count, start_time, end_time, create_time
+        from seckill.seckill
+        where seckill_id = #{seckillId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="SeckillMap">
+        select
+          seckill_id, title, image, price, cost_price, stock_count, start_time, end_time, create_time
+        from seckill.seckill
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="SeckillMap">
+        select
+          seckill_id, title, image, price, cost_price, stock_count, start_time, end_time, create_time
+        from seckill.seckill
+        <where>
+            <if test="seckillId != null">
+                and seckill_id = #{seckillId}
+            </if>
+            <if test="title != null and title != ''">
+                and title = #{title}
+            </if>
+            <if test="image != null and image != ''">
+                and image = #{image}
+            </if>
+            <if test="price != null">
+                and price = #{price}
+            </if>
+            <if test="costPrice != null">
+                and cost_price = #{costPrice}
+            </if>
+            <if test="stockCount != null">
+                and stock_count = #{stockCount}
+            </if>
+            <if test="startTime != null">
+                and start_time = #{startTime}
+            </if>
+            <if test="endTime != null">
+                and end_time = #{endTime}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="seckillId" useGeneratedKeys="true">
+        insert into seckill.seckill(title, image, price, cost_price, stock_count, start_time, end_time, create_time)
+        values (#{title}, #{image}, #{price}, #{costPrice}, #{stockCount}, #{startTime}, #{endTime}, #{createTime})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update seckill.seckill
+        <set>
+            <if test="title != null and title != ''">
+                title = #{title},
+            </if>
+            <if test="image != null and image != ''">
+                image = #{image},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="costPrice != null">
+                cost_price = #{costPrice},
+            </if>
+            <if test="stockCount != null">
+                stock_count = #{stockCount},
+            </if>
+            <if test="startTime != null">
+                start_time = #{startTime},
+            </if>
+            <if test="endTime != null">
+                end_time = #{endTime},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+        </set>
+        where seckill_id = #{seckillId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from seckill.seckill where seckill_id = #{seckillId}
+    </delete>
+
+</mapper>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.goddong.mapper.dao.SeckillOrderDao">
+
+    <resultMap type="com.goddong.mapper.entity.SeckillOrder" id="SeckillOrderMap">
+        <result property="seckillId" column="seckill_id" jdbcType="INTEGER"/>
+        <result property="money" column="money" jdbcType="NUMERIC"/>
+        <result property="userPhone" column="user_phone" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="state" column="state" jdbcType="OTHER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="SeckillOrderMap">
+        select
+          seckill_id, money, user_phone, create_time, state
+        from seckill.seckill_order
+        where seckill_id = #{seckillId}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="SeckillOrderMap">
+        select
+          seckill_id, money, user_phone, create_time, state
+        from seckill.seckill_order
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="SeckillOrderMap">
+        select
+          seckill_id, money, user_phone, create_time, state
+        from seckill.seckill_order
+        <where>
+            <if test="seckillId != null">
+                and seckill_id = #{seckillId}
+            </if>
+            <if test="money != null">
+                and money = #{money}
+            </if>
+            <if test="userPhone != null">
+                and user_phone = #{userPhone}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="state != null">
+                and state = #{state}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="seckillId" useGeneratedKeys="true">
+        insert into seckill.seckill_order(money, create_time, state)
+        values (#{money}, #{createTime}, #{state})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update seckill.seckill_order
+        <set>
+            <if test="money != null">
+                money = #{money},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="state != null">
+                state = #{state},
+            </if>
+        </set>
+        where seckill_id = #{seckillId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from seckill.seckill_order where seckill_id = #{seckillId}
+    </delete>
+
+</mapper>
