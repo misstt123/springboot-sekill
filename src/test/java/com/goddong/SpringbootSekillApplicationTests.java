@@ -1,4 +1,4 @@
-package com.goddong.springbootsekill;
+package com.goddong;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
